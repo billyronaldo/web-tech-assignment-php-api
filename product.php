@@ -8,12 +8,12 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'GET':
-        // Endpoint to retrieve all products
+        // GET all products
         $sql = "SELECT * FROM product";
         $result = $db->query($sql);
 
         if ($result === false) {
-            // Error handling for failed query
+            // error failed query
             $error = $db->error;
             echo json_encode(array("error" => $error));
         } else {
@@ -28,10 +28,10 @@ switch ($method) {
         break;
 
     case 'POST':
-        // Endpoint to add a new product
-        // Assuming form fields are submitted via POST
-        $name = $_POST['name'];
+        // POST add new product
         $description = $_POST['description'];
+        $pricing = $_POST['pricing'];
+        $shipping_cost = $_POST['shipping_cost'];
 
         // Check if image file is uploaded
         if (isset($_FILES['image'])) {
@@ -39,10 +39,10 @@ switch ($method) {
             $image = addslashes(file_get_contents($_FILES['image']['tmp_name']));
 
             // Insert the image as a BLOB into the database
-            $sql = "INSERT INTO product (name, description, image) VALUES ('$name', '$description', '$image')";
+            $sql = "INSERT INTO product ( description, image, pricing, shipping_cost) VALUES ( '$description', '$image', '$pricing', '$shipping_cost')";
 
             if ($db->query($sql) === TRUE) {
-                echo json_encode(array("success" => "New product added successfully."));
+                echo json_encode(array("success" => "New product added"));
             } else {
                 echo json_encode(array("error" => "Error: " . $sql . "<br>" . $db->error));
             }
