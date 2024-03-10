@@ -1,13 +1,23 @@
 <?php
 include 'dbconnection.php';
+include 'token_functions.php';
 
 header("Content-Type: application/json");
 
 // Check the HTTP request method
 $method = $_SERVER['REQUEST_METHOD'];
 
+// Handle the request
 switch ($method) {
     case 'GET':
+        // Verify token for GET request
+        $token = getBearerToken();
+
+        if (!$token || !isValidToken($token, $db)) {
+            echo json_encode(array("error" => "Invalid or expired token."));
+            break;
+        }
+
         // GET all products
         $sql = "SELECT * FROM product";
         $result = $db->query($sql);
@@ -28,6 +38,14 @@ switch ($method) {
         break;
 
     case 'POST':
+        // Verify token for POST request
+        $token = getBearerToken();
+
+        if (!$token || !isValidToken($token, $db)) {
+            echo json_encode(array("error" => "Invalid or expired token."));
+            break;
+        }
+
         // POST add new product
         $description = $_POST['description'];
         $pricing = $_POST['pricing'];

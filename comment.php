@@ -1,11 +1,13 @@
 <?php
 include 'dbconnection.php';
+include 'token_functions.php';
 
 header("Content-Type: application/json");
 
-// Check request method
+// Check the HTTP request method
 $method = $_SERVER['REQUEST_METHOD'];
 
+// Handle the request
 switch ($method) {
     case 'GET':
         // GET all comments for a product
@@ -33,6 +35,14 @@ switch ($method) {
         break;
 
     case 'POST':
+        // Verify token for POST request
+        $token = getBearerToken();
+
+        if (!$token || !isValidToken($token, $db)) {
+            echo json_encode(array("error" => "Invalid or expired token."));
+            break;
+        }
+
         // POST add new comment
         $product_id = $_POST['product_id'];
         $user_id = $_POST['user_id'];
