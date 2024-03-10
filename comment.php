@@ -10,6 +10,14 @@ $method = $_SERVER['REQUEST_METHOD'];
 // Handle the request
 switch ($method) {
     case 'GET':
+        // Verify token for GET request
+        $token = getBearerToken();
+
+        if (!$token || !isValidToken($token, $db)) {
+            echo json_encode(array("error" => "Invalid or expired token."));
+            break;
+        }
+
         // GET all comments for a product
         if (isset($_GET['product_id'])) {
             $product_id = $_GET['product_id'];

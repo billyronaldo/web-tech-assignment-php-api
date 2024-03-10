@@ -54,6 +54,14 @@ switch ($method) {
         break;
 
     case 'GET':
+        // Verify token for GET request
+        $token = getBearerToken();
+
+        if (!$token || !isValidToken($token, $db)) {
+            echo json_encode(array("error" => "Invalid or expired token."));
+            break;
+        }
+
         // GET all orders for a user
         if (isset($_GET['user_id'])) {
             $user_id = $_GET['user_id'];
