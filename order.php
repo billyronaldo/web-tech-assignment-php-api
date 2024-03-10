@@ -3,7 +3,7 @@ include 'dbconnection.php';
 
 header("Content-Type: application/json");
 
-// Check the HTTP request method
+// Check request method
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
@@ -13,7 +13,7 @@ switch ($method) {
             $user_id = $_POST['user_id'];
             $product_id = $_POST['product_id'];
             $quantity = $_POST['quantity'];
-            $order_date = date('Y-m-d H:i:s'); // current backend time
+            $order_date = date('Y-m-d H:i:s'); // Current backend time
 
             // Get product price
             $productQuery = "SELECT pricing FROM product WHERE id = $product_id";
