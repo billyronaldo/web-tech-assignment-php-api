@@ -55,7 +55,7 @@ switch ($method) {
                     echo json_encode(array("error" => "Wrong password!"));
                 }
             } else {
-                // User not found (invalid email)
+                // User not found
                 echo json_encode(array("error" => "Wrong email!"));
             }
         }

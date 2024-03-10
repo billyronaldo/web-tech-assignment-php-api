@@ -38,7 +38,7 @@ switch ($method) {
             // Read the image file as binary data
             $image = addslashes(file_get_contents($_FILES['image']['tmp_name']));
 
-            // Insert the image as a BLOB into the database
+            // Insert the image as a BLOB
             $sql = "INSERT INTO product ( description, image, pricing, shipping_cost) VALUES ( '$description', '$image', '$pricing', '$shipping_cost')";
 
             if ($db->query($sql) === TRUE) {
